@@ -69,19 +69,26 @@ healthmetric-backend/
    RESEND_API_KEY=your_resend_key
    ```
 
-3. **Run development server**:
+3. **Run database migration**:
+   Create all database tables in NeonDB:
+
+   ```bash
+   npx ts-node src/config/migrate.ts
+   ```
+
+4. **Run development server**:
 
    ```bash
    npm run dev
    ```
 
-4. **Build for production**:
+5. **Build for production**:
 
    ```bash
    npm run build
    ```
 
-5. **Start production server**:
+6. **Start production server**:
    ```bash
    npm start
    ```
@@ -107,10 +114,25 @@ All routes are prefixed with `/api`:
 - **DOCTOR**: Medical professional access
 - **PATIENT**: Patient access
 
+## Database Schema
+
+The migration creates the following tables:
+
+- **users** - User accounts (admin, doctor, patient)
+- **patients** - Patient-specific information
+- **doctors** - Doctor profiles and availability
+- **appointments** - Appointment bookings
+- **prescriptions** - Medical prescriptions
+- **reports** - Medical reports with file storage
+- **vitals** - Patient vital signs tracking
+- **subscriptions** - Stripe subscription management
+- **notifications** - User notifications
+- **password_reset_tokens** - Password reset functionality
+
 ## Next Steps
 
 1. Set up your NeonDB database and add the connection string to `.env`
-2. Create database tables/schema
+2. Run the migration script to create all tables
 3. Implement controller logic for each endpoint
 4. Add input validation
 5. Set up error handling
