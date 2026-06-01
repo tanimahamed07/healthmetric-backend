@@ -9,6 +9,11 @@ router.get("/", doctorController.getAllDoctors);
 router.get("/:id", doctorController.getDoctorById);
 
 router.use(authenticate);
+router.get(
+  "/patients",
+  authorize("DOCTOR"),
+  doctorController.getDoctorPatients,
+);
 router.put("/:id", authorize("DOCTOR", "ADMIN"), doctorController.updateDoctor);
 router.delete("/:id", authorize("ADMIN"), doctorController.deleteDoctor);
 
