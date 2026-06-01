@@ -7,14 +7,13 @@ const router = Router();
 
 router.use(authenticate);
 
-router.post("/", authorize("DOCTOR", "PATIENT"), reportController.createReport);
 router.get("/", reportController.getReports);
-router.get("/:id", reportController.getReportById);
-router.put("/:id", authorize("DOCTOR"), reportController.updateReport);
-router.delete(
-  "/:id",
-  authorize("DOCTOR", "ADMIN"),
-  reportController.deleteReport,
+router.post("/", authorize("PATIENT"), reportController.createReport);
+router.delete("/:id", authorize("PATIENT"), reportController.deleteReport);
+router.get(
+  "/patient/:patientId",
+  authorize("DOCTOR"),
+  reportController.getReportsByPatient,
 );
 
 export default router;

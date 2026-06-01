@@ -7,10 +7,9 @@ const router = Router();
 
 router.use(authenticate);
 
-router.post("/", authorize("PATIENT"), appointmentController.createAppointment);
 router.get("/", appointmentController.getAppointments);
-router.get("/:id", appointmentController.getAppointmentById);
-router.put("/:id", appointmentController.updateAppointment);
-router.delete("/:id", appointmentController.deleteAppointment);
+router.post("/", authorize("PATIENT"), appointmentController.createAppointment);
+router.patch("/:id", appointmentController.updateAppointment);
+router.get("/slots", appointmentController.getAvailableSlots);
 
 export default router;

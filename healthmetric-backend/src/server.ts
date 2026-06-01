@@ -15,6 +15,8 @@ import subscriptionRoutes from "./routes/subscription.routes";
 import notificationRoutes from "./routes/notification.routes";
 import vitalRoutes from "./routes/vital.routes";
 import adminRoutes from "./routes/admin.routes";
+import { upload, uploadToCloudinary } from "./controllers/upload.controller";
+import { authenticate } from "./middleware/auth";
 
 // Load environment variables
 dotenv.config();
@@ -43,6 +45,14 @@ app.use("/api/subscriptions", subscriptionRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/vitals", vitalRoutes);
 app.use("/api/admin", adminRoutes);
+
+// Upload route
+app.post(
+  "/api/upload-cloudinary",
+  authenticate,
+  upload.single("file"),
+  uploadToCloudinary,
+);
 
 // Health check
 app.get("/health", (req, res) => {
