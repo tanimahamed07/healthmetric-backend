@@ -36,7 +36,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginFormData) => {
     try {
       setErrorMessage("");
-      const response = await api.post("/api/auth/login", data);
+      const response = await api.post("/auth/login", data);
       const user = response.data;
 
       // Redirect based on role

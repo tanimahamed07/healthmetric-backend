@@ -51,7 +51,7 @@ export default function RegisterPage() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       setErrorMessage("");
-      await api.post("/api/auth/register", {
+      await api.post("/auth/register", {
         name: data.name,
         email: data.email,
         password: data.password,

@@ -7,6 +7,10 @@ export const getReports = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
 
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     // Get patient record
     const [patient] = await sql`
       SELECT id FROM patients WHERE user_id = ${userId}
@@ -34,6 +38,10 @@ export const createReport = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
     const { title, fileUrl, publicId, reportType } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     if (!title || !fileUrl || !publicId || !reportType) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -66,6 +74,10 @@ export const deleteReport = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
     const reportId = req.params.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     // Get patient record
     const [patient] = await sql`
@@ -112,6 +124,10 @@ export const getReportsByPatient = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user?.userId;
     const patientId = req.params.patientId;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     // Verify user is a doctor
     const [doctor] = await sql`

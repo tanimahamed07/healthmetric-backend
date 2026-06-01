@@ -7,6 +7,10 @@ export const getAppointments = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.userId;
     const role = req.user?.role;
 
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     if (role === "PATIENT") {
       // Get patient's appointments
       const [patient] = await sql`
@@ -74,6 +78,10 @@ export const createAppointment = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.userId;
     const { doctorId, date, timeSlot, notes } = req.body;
 
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     if (!doctorId || !date || !timeSlot) {
       return res.status(400).json({ message: "Missing required fields" });
     }
@@ -124,6 +132,10 @@ export const updateAppointment = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.userId;
     const appointmentId = req.params.id;
     const { status } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     if (
       !status ||

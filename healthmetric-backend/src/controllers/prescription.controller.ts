@@ -7,6 +7,10 @@ export const getPrescriptions = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.userId;
     const role = req.user?.role;
 
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     if (role === "PATIENT") {
       // Get patient's prescriptions
       const [patient] = await sql`
@@ -68,6 +72,10 @@ export const createPrescription = async (req: AuthRequest, res: Response) => {
     const userId = req.user?.userId;
     const role = req.user?.role;
     const { patientId, medicines, notes } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
     if (role !== "DOCTOR") {
       return res

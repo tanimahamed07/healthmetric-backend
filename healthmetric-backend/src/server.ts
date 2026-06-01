@@ -1,8 +1,14 @@
+import dotenv from "dotenv";
+
+// Load environment variables FIRST before any other imports
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import dotenv from "dotenv";
+import { createServer } from "http";
 import sql from "./config/db";
+import { initializeSocket } from "./config/socket";
 
 // Import routes
 import authRoutes from "./routes/auth.routes";
@@ -18,11 +24,14 @@ import adminRoutes from "./routes/admin.routes";
 import { upload, uploadToCloudinary } from "./controllers/upload.controller";
 import { authenticate } from "./middleware/auth";
 
-// Load environment variables
-dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Create HTTP server
+const httpServer = createServer(app);
+
+// Initialize Socket.IO
+initializeSocket(httpServer);
 
 // Middleware
 app.use(
@@ -66,8 +75,9 @@ const startServer = async () => {
     await sql`SELECT 1`;
     console.log("✅ Database connected successfully");
 
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`🔌 WebSocket server initialized`);
     });
   } catch (error) {
     console.error("❌ Failed to start server:", error);
